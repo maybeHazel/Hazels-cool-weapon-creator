@@ -9,24 +9,25 @@ every weapon that has this attack type will use the type's specific setup or dam
 You can use it like this:
 
 includable stuff:
-module.include("built in presets") - including one option at time
+```
+module.include("built in presets") -- including one option at time
 
 local options = {"locked custom damage functions", "locked custom setup functions", "lastHit attribute", "lastHitBy attribute"}
-module.include(options) - including multiple options at once
--->
+module.include(options) -- including multiple options at once
+```
 normal use:
-
+```
 local properties = {
-["Damage"] = 10,
-["AttackRate"] = 1,
-["AttackType"] = nil (not obligatory)
+  ["Damage"] = 10,
+  ["AttackRate"] = 1,
+  ["AttackType"] = nil (not obligatory)
 }
 local mySword = module.new(tool, tool.Hitbox, properties)
 mySword:Attack() 
-
--->
+```
 
 custom damage function:
+```
 function overTimeDamageFunction(otherHumanoid,self)
 
   for i = 0, self.burnCount, do
@@ -37,12 +38,12 @@ function overTimeDamageFunction(otherHumanoid,self)
 end
 
 module.newDamage("overtimeDamage", overTimeDamageFunction)
-
 local mySword = module.new(tool, tool.Hitbox, {..., ["customDamageFunction"] = "overtimeDamage" })
--->
+```
 you can do the same thing for custom setup functions. Setup functions like:
+```
 function burnDmgSetup(self, properties)
-self["burnCount"] = 4,
-self["burnInterval"] = .5
+  self["burnCount"] = 4,
+  self["burnInterval"] = .5
 end
--->
+```
