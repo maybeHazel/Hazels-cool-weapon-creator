@@ -1,6 +1,4 @@
---Version name: Proper rythm (All there is to it)
---i might be using way too much space for the separator comments but i lowkey cant it see when im trying to find something so thats
---why i made them that big
+--i might be using way too much space for the separator comments but when im trying to find something i cant see it.
 
 --//Services\\--
 
@@ -135,6 +133,9 @@ function Class.new(Tool: Tool, Hitbox: BasePart, properties: MeleeWeaponBase): M
 
 	local setupFunction
 	local useBuiltIntSetup = IsIncluded("build in presets")
+	local useTypeSetup =  properties["UseTypeSetupFunction"]
+	local customSetupFunc = properties["setupFunction"]
+	local usedSetupFunc
 
 	if useBuiltIntSetup then
 		setupFunction = BuiltInPresets.setupFunctions[newSword.AttackType]
@@ -148,6 +149,24 @@ function Class.new(Tool: Tool, Hitbox: BasePart, properties: MeleeWeaponBase): M
 
 	if properties["UseAttackTypeDamageFunction"] then
 		newSword["UseAttackTypeDamageFunction"] = true
+	end
+
+	if useTypeSetup == true then
+		setupFunction = customPresets.setupFunctions[newSword.AttackType]
+		usedSetupFunc = "type"
+
+	elseif useTypeSetup ~= true and customSetupFunc then
+		setupFunction = customPresets.setupFunctions[properties["setupFunction"]]
+		usedSetupFunc = "custom"
+	end
+
+	if (useTypeSetup == true and customSetupFunc) and not setupFunction then
+		if usedSetupFunc == "type" then
+			setupFunction = customPresets.setupFunctions[newSword.AttackType]
+
+		elseif usedSetupFunc == "custom" then
+			setupFunction = customPresets.setupFunctions[properties["setupFunction"]]
+		end
 	end
 
 	if setupFunction then
@@ -302,11 +321,11 @@ function Class:Attack()
 				if self["UseAttackTypeDamageFunction"] == true then
 					damageFunction = customPresets.damageFunctions[self.AttackType]
 				
-				if not damageFunction and self["customDamageFunction"] then
+					if not damageFunction and self["customDamageFunction"] then
 					damageFunction = customPresets.damageFunctions[self.customDamageFunction]
-				end
+					end
 
-				elseif self["UseAttackTypeDamageFunction"] ~= true and self["customDamageFunction"] then
+					elseif self["UseAttackTypeDamageFunction"] ~= true and self["customDamageFunction"] then
 					damageFunction = customPresets.damageFunctions[self.customDamageFunction]
 				end
 
