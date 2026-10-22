@@ -150,12 +150,6 @@ const presets = {
 
 	end,
 
-
-	["Guitarrist"] = function(self, stats)
-		if not self and not stats then return end
-
-	end,
-            
 }, --end of setup functions
           
 }
