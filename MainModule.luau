@@ -1,4 +1,5 @@
---i might be using way too much space for the separator comments but when im trying to find something i cant see it.
+--i might be using way too much space for the separator comments but i lowkey cant it see when im trying to find something so thats
+--why i made them that big
 
 --//Services\\--
 
@@ -31,6 +32,8 @@ type MeleeWeaponBase = {
 
 	["customDamageFunction"]: string,
 	["UseAttackTypeDamageFunction"]: boolean,
+	["setupFunction"]: string,
+	["UseTypeSetupFunction"]: boolean,
 
 	Attack: (self: MeleeWeaponBase) -> (),
 	Setup: (self: MeleeWeaponBase, Stats: {}) -> (),
@@ -243,17 +246,6 @@ end
 function Class:Setup(properties: {})
 	if not properties then return end
 
-	local AttackType = properties["AttackType"]
-	if AttackType then
-		if AttackType == "overTime" then
-			self["DamageInterval"] = properties["DamageInterval"] or 0.2
-			self["DamageCount"] = properties["DamageCount"] or 1
-		elseif AttackType == "Accumulative" then
-			self["HitCount"] = 0
-			self["DamagesPerHit"] = properties["DamagesPerHit"] or { ["2"] = 10, ["4"] = 20, ["6"] = 25 }
-		end
-	end
-
 	for propertyName, Value in properties do
 		if not self[propertyName] then
 			continue
@@ -321,11 +313,11 @@ function Class:Attack()
 				if self["UseAttackTypeDamageFunction"] == true then
 					damageFunction = customPresets.damageFunctions[self.AttackType]
 				
-					if not damageFunction and self["customDamageFunction"] then
+				if not damageFunction and self["customDamageFunction"] then
 					damageFunction = customPresets.damageFunctions[self.customDamageFunction]
-					end
+				end
 
-					elseif self["UseAttackTypeDamageFunction"] ~= true and self["customDamageFunction"] then
+				elseif self["UseAttackTypeDamageFunction"] ~= true and self["customDamageFunction"] then
 					damageFunction = customPresets.damageFunctions[self.customDamageFunction]
 				end
 
