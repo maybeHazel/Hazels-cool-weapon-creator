@@ -89,13 +89,20 @@ end
 --Use this to enable extra options in the module (like csharp "using" or java "include" ig, idk java)
 function Class.include(option: includables)
 	if not option then return end
-	if typeof(option) ~= "string" then return `expected string but got {typeof(option)} instead.` end
+	if typeof(option) ~= "string" or typeof(option) ~= "table" then return warn(`expected string or table but got {typeof(option)} instead.`) end
 
 	if not table.find(includableStuff, option) then return warn(`Option {option} does not exist`) end
 
 	if table.find(enabledIncludables, option) then return warn(`{option} option is already included/enabled`) end
 
-	table.insert(enabledIncludables, option)
+	if typeof(option) == "string" then
+		table.insert(enabledIncludables, option)
+
+	elseif typeof(option) == "table" then
+		for _, v in option do
+			table.insert(enabledIncludables, v)
+		end
+	end
 
 	return nil
 end
@@ -104,7 +111,7 @@ end
 --Disables the specified option
 function Class.DisableIncluded(option: includables)
 	if not option then return end
-	if typeof(option) ~= "string" then return `expected string but got {typeof(option)} instead.` end
+	if typeof(option) ~= "string" then return (`expected string but got {typeof(option)} instead.`) end
 
 	if not table.find(includableStuff, option) then return warn(`Option {option} does not exist`) end
 
