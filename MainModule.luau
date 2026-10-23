@@ -149,8 +149,6 @@ function Class.new(Tool: Tool, Hitbox: BasePart, properties: MeleeWeaponBase): M
 
 	if useBuiltIntSetup then
 		setupFunction = BuiltInPresets.setupFunctions[newSword.AttackType]
-	else
-		setupFunction = customPresets.setupFunctions[newSword.AttackType]
 	end
 
 	if properties["customDamageFunction"] then
